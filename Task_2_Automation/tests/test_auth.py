@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
 
+from Task_2_Automation.pages.login_page import LoginPage
 
 def test_auth_001_successful_login():
     """
@@ -10,10 +11,11 @@ def test_auth_001_successful_login():
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
 
-        
-        page.goto("https://www.saucedemo.com/")
-        page.locator("#user-name").fill("standard_user")
-        page.locator("#password").fill("secret_sauce")
-        page.locator("#login-button").click()
+        login_page = LoginPage(page)
+        login_page.open()
+        login_page.enter_username("standard_user")
+        login_page.enter_password("secret_sauce")
+        login_page.click_login()
         assert "inventory.html" in page.url
+
         browser.close()
