@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 
 from Task_2_Automation.pages.login_page import LoginPage
 from Task_2_Automation.pages.inventory_page import InventoryPage
-
+from Task_2_Automation.pages.cart_page import CartPage
 
 def test_cart_001_add_item_to_cart():
     """
@@ -72,5 +72,29 @@ def test_cart_003_add_multiple_items_to_cart():
         inventory_page.add_backpack_to_cart()
         inventory_page.add_bike_light_to_cart()
         assert inventory_page.get_cart_badge_count() == "2"
+
+        browser.close()
+
+def test_cart_004_verify_cart_contents():
+    """
+    TC_CART_004: Verify that products added from the inventory
+    page appear in the shopping cart.
+    """
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
+
+        login_page = LoginPage(page)
+        login_page.open()
+        login_page.enter_username("standard_user")
+        login_page.enter_password("secret_sauce")
+        login_page.click_login()
+
+        inventory_page = InventoryPage(page)
+        inventory_page.add_backpack_to_cart()
+        inventory_page.open_cart()
+        cart_page = CartPage(page)
+        assert cart_page.is_backpack_displayed()
 
         browser.close()
