@@ -34,3 +34,26 @@ class CheckoutPage:
 
     def is_checkout_overview_displayed(self) -> bool:
         return self.page.locator(".checkout_summary_container").is_visible()
+    def get_error_message(self) -> str:
+        return self.page.locator("[data-test='error']").inner_text()
+
+    def get_item_name(self) -> str:
+        return self.page.locator(".inventory_item_name").inner_text()
+
+    def get_item_price(self) -> str:
+        return self.page.locator(".inventory_item_price").inner_text()
+
+    def get_subtotal(self) -> str:
+        return self.page.locator(".summary_subtotal_label").inner_text()
+
+    def get_tax(self) -> str:
+        return self.page.locator(".summary_tax_label").inner_text()
+
+    def get_total(self) -> str:
+        return self.page.locator(".summary_total_label").inner_text()
+
+    def click_finish(self):
+        self.page.locator("#finish").click()
+
+    def is_order_confirmation_displayed(self) -> bool:
+        return self.page.locator(".checkout_complete_container").is_visible()
