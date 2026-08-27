@@ -98,3 +98,29 @@ def test_cart_004_verify_cart_contents():
         assert cart_page.is_backpack_displayed()
 
         browser.close()
+
+def test_cart_005_verify_product_price_in_cart():
+    """
+    TC_CART_005: Verify that the product price displayed in
+    the cart matches the price displayed in the inventory.
+    """
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
+
+        login_page = LoginPage(page)
+        login_page.open()
+        login_page.enter_username("standard_user")
+        login_page.enter_password("secret_sauce")
+        login_page.click_login()
+
+        inventory_page = InventoryPage(page)
+        inventory_price = inventory_page.get_backpack_price()
+        inventory_page.add_backpack_to_cart()
+        inventory_page.open_cart()
+        cart_page = CartPage(page)
+        cart_price = cart_page.get_backpack_price()
+        assert cart_price == inventory_price
+
+        browser.close()
