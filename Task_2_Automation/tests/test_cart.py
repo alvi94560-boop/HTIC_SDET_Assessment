@@ -124,3 +124,30 @@ def test_cart_005_verify_product_price_in_cart():
         assert cart_price == inventory_price
 
         browser.close()
+
+def test_cart_006_remove_all_items_from_cart():
+    """
+    TC_CART_006: Verify that the cart can be emptied
+    by removing all added products.
+    """
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
+
+        login_page = LoginPage(page)
+        login_page.open()
+        login_page.enter_username("standard_user")
+        login_page.enter_password("secret_sauce")
+        login_page.click_login()
+
+        inventory_page = InventoryPage(page)
+        inventory_page.add_backpack_to_cart()
+        inventory_page.add_bike_light_to_cart()
+        inventory_page.open_cart()
+        cart_page = CartPage(page)
+        assert cart_page.get_cart_item_count() == 2
+        cart_page.remove_all_items()
+        assert cart_page.is_cart_empty()
+
+        browser.close()
