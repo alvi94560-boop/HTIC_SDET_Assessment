@@ -28,3 +28,5 @@ class CartPage:
 
     def is_cart_empty(self) -> bool:
         return self.cart_items.count() == 0
+    def click_checkout(self):
+        self.page.locator("#checkout").click()

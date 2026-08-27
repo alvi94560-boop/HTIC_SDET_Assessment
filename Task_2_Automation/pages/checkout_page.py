@@ -31,6 +31,8 @@ class CheckoutPage:
 
     def click_continue(self):
         self.page.locator("#continue").click()
+    def click_cancel(self):
+        self.page.locator("#cancel").click()
 
     def is_checkout_overview_displayed(self) -> bool:
         return self.page.locator(".checkout_summary_container").is_visible()
