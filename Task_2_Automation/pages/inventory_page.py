@@ -26,3 +26,8 @@ class InventoryPage:
 
     def open_cart(self):
         self.cart_icon.click()
+    def remove_backpack_from_cart(self):
+        self.backpack_remove_button.click()
+
+    def is_cart_badge_visible(self) -> bool:
+        return self.cart_badge.is_visible()

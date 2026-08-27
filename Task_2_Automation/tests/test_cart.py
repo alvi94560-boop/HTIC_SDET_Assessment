@@ -14,7 +14,6 @@ def test_cart_001_add_item_to_cart():
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
 
-        # Login
         login_page = LoginPage(page)
         login_page.open()
         login_page.enter_username("standard_user")
@@ -25,5 +24,30 @@ def test_cart_001_add_item_to_cart():
         inventory_page.add_backpack_to_cart()
         assert inventory_page.is_backpack_removed_button_visible()
         assert inventory_page.get_cart_badge_count() == "1"
+
+        browser.close()
+
+
+def test_cart_002_remove_item_from_cart():
+    """
+    TC_CART_002: Verify that removing an item removes it
+    from the shopping cart.
+    """
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
+
+        login_page = LoginPage(page)
+        login_page.open()
+        login_page.enter_username("standard_user")
+        login_page.enter_password("secret_sauce")
+        login_page.click_login()
+
+        inventory_page = InventoryPage(page)
+        inventory_page.add_backpack_to_cart()
+        assert inventory_page.get_cart_badge_count() == "1"
+        inventory_page.remove_backpack_from_cart()
+        assert not inventory_page.is_cart_badge_visible()
 
         browser.close()
