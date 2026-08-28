@@ -284,3 +284,40 @@ def test_chk_009_cancel_checkout():
         assert page.locator(".cart_list").is_visible()
 
         browser.close()
+
+def test_bug_001_empty_cart_checkout_restriction():
+    """
+    BUG-001 / TC_CART_008:
+    Verify that checkout cannot proceed when the cart is empty.
+
+    Known defect:
+    SauceDemo currently allows an empty cart to proceed through checkout.
+    """
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
+
+        login_page = LoginPage(page)
+        login_page.open()
+        login_page.enter_username("standard_user")
+        login_page.enter_password("secret_sauce")
+        login_page.click_login()
+
+        page.locator("a.shopping_cart_link").click()
+
+        assert page.locator(".cart_item").count() == 0
+
+        checkout_page = CheckoutPage(page)
+        checkout_page.click_checkout()
+
+        checkout_page.enter_first_name("Alvi")
+        checkout_page.enter_last_name("Test")
+        checkout_page.enter_postal_code("682001")
+        checkout_page.click_continue()
+
+        assert not checkout_page.is_checkout_overview_displayed(), (
+            "BUG-001: Checkout is allowed to proceed with an empty cart."
+        )
+
+        browser.close()

@@ -310,6 +310,24 @@ URL: https://www.saucedemo.com/
   1. Click the shopping cart icon.
 * Expected Result: The user is navigated to the shopping cart page.
 
+## TC_CART_008: Prevent Checkout With Empty Cart
+
+* Feature: FEAT-CART
+* Description: Verify that a user cannot complete checkout when the shopping cart is empty.
+* Pre-condition: User is logged in and the shopping cart contains no products.
+* Execution Steps:
+
+  1. Open the shopping cart.
+  2. Verify that the cart contains no products.
+  3. Click the `Checkout` button.
+  4. Enter valid customer information if checkout is allowed to proceed.
+  5. Continue through the checkout flow.
+  6. Observe the final order result.
+
+* Expected Result: The application should prevent the user from proceeding with checkout when the cart is empty and should not allow an order to be completed.
+
+* Actual Result: The application allows the user to proceed through checkout and successfully complete an order even though the cart is empty.
+
 # Feature: Checkout Flow & Order Processing (FEAT-CHK)
 
 ## TC_CHK_001: Navigate to Checkout
